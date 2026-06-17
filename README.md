@@ -27,7 +27,7 @@ Sistema web interno desenvolvido em Flask para envio de e-mails para acionamento
 Clone o repositório:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Bernardo-Policarpo/Kanban-Email.git
 cd kanban-email
 ```
 
