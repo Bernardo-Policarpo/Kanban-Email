@@ -78,3 +78,46 @@ body {
     font-size: 14px;
     text-align: center;
 }
+
+#homeMenu {
+    background-color: white;
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#homeTitle {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+#menuButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.menuButton {
+    display: block;
+
+    width: 100%;
+    padding: 14px;
+
+    background-color: #2563eb;
+    color: white;
+
+    text-align: center;
+    text-decoration: none;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    transition: background-color 0.2s;
+}
+
+.menuButton:hover {
+    background-color: #1d4ed8;
+}

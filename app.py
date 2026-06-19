@@ -24,7 +24,36 @@ def home():
 
     return render_template('home.html')
 
-@app.route('/login', methods=['POST'])
+@app.route('/adicionar-cartao')
+def add_card():
+    if not logged():
+        return redirect(url_for('index'))
+
+    return render_template('add_card.html')
+
+@app.route('/editar-cartoes')
+def edit_card():
+    if not logged():
+        return redirect(url_for('index'))
+
+    return render_template('edit_card.html')
+
+@app.route('/editar-emais')
+def edit_email():
+    if not logged():
+        return redirect(url_for('index'))
+
+    return render_template('edit_email.html')
+
+@app.route('/enviar-emais')
+def send_email():
+    if not logged():
+        return redirect(url_for('index'))
+
+    return render_template('send_email.html')
+
+
+@app.post('/login')
 def login():
     password = request.form['password']
     access_key_hash = os.getenv('ACCESS_KEY_HASH')
@@ -37,7 +66,13 @@ def login():
     except VerifyMismatchError:
         msg = "Senha incorreta. Tente novamente."
         return render_template('index.html', msg=msg)   
+
+
+@app.post('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('index'))
     
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
