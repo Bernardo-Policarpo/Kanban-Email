@@ -19,6 +19,7 @@ Sistema web interno desenvolvido em Flask para envio de e-mails para acionamento
 ├── createdb.py
 ├── templates/
 ├── static/
+├── createdb.py
 ├── .env
 └── requirements.txt
 ```
