@@ -16,6 +16,7 @@ Sistema web interno desenvolvido em Flask para envio de e-mails para acionamento
 ```text
 .
 ├── app.py
+├── createdb.py
 ├── templates/
 ├── static/
 ├── .env
@@ -59,7 +60,19 @@ pip install -r requirements.txt
 
 Configure as variáveis de ambiente no arquivo `.env`.
 
-Execute a aplicação:
+## Criação do banco de dados
+
+Com o ambiente virtual ativado, execute:
+
+```bash
+py createdb.py
+```
+
+O comando deve ser executado na raiz do projeto.
+
+## Execução
+
+Inicie a aplicação:
 
 ```bash
 python app.py
