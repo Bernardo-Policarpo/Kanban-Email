@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Cartão</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div id="addCardMenu">
+
+            <h2 id="addCardTitle">
+                Preencha as informações
+            </h2>
+
+            <form action="/add_card" method="post" id="addCardForm">
+
+                <input type="text" name="codigo" id="codigo" placeholder="Código" maxlength="9" minlength="9" pattern="[0-9]{9}" required>
+
+                <input type="text" name="descricao" id="descricao" placeholder="Descrição" required>
+
+                <input type="number" name="qtd_pecas" id="qtdPecas" placeholder="Quantidade de peças" required>
+
+                <input type="number" name="qtd_cartoes" id="qtdCartoes" placeholder="Quantidade de cartões" required>
+
+                <input type="submit" value="Salvar" class="btnSave">
+
+            </form>
+            {% if msg %}
+                <p class="error">{{ msg }}</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

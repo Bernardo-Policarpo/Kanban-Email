@@ -1,3 +1,4 @@
+from createdb import get_db
 from flask import Flask, render_template, request, redirect, url_for, session
 from argon2 import PasswordHasher   
 from argon2.exceptions import VerifyMismatchError
@@ -25,28 +26,28 @@ def home():
     return render_template('home.html')
 
 @app.route('/adicionar-cartao')
-def add_card():
+def add_card_page():
     if not logged():
         return redirect(url_for('index'))
 
     return render_template('add_card.html')
 
 @app.route('/editar-cartoes')
-def edit_card():
+def edit_card_page():
     if not logged():
         return redirect(url_for('index'))
 
     return render_template('edit_card.html')
 
 @app.route('/editar-emais')
-def edit_email():
+def edit_email_page():
     if not logged():
         return redirect(url_for('index'))
 
     return render_template('edit_email.html')
 
 @app.route('/enviar-emais')
-def send_email():
+def send_email_page():
     if not logged():
         return redirect(url_for('index'))
 
@@ -73,6 +74,34 @@ def logout():
     session.pop('logged_in', None)
     return redirect(url_for('index'))
     
+
+@app.post('/add_card')
+def add_card():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    codigo = request.form['codigo']
+    descricao = request.form['descricao']
+    qtd_pecas = request.form['qtd_pecas']
+    qtd_cartoes = request.form['qtd_cartoes']
+
+    cursor.execute('SELECT codigo FROM cartoes WHERE codigo = ?',(codigo,))
+
+    resultado = cursor.fetchone()
+
+    if resultado is None:
+        cursor.execute('INSERT INTO cartoes (codigo, descricao, qtd_pecas, qtd_cartoes) VALUES (?, ?, ?, ?)', (codigo, descricao, qtd_pecas, qtd_cartoes))
+
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('home'))
+
+    else:
+        conn.close()
+        msg = "Cartão já salvo no sistema."
+        return render_template('add_card.html', msg=msg)   
+
 
 if __name__ == '__main__':
     app.run(debug=False)

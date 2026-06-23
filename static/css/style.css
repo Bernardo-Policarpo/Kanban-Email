@@ -121,3 +121,66 @@ body {
 .menuButton:hover {
     background-color: #1d4ed8;
 }
+
+
+#addCardMenu {
+    background-color: white;
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#addCardTitle {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+#addCardForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#codigo,
+#descricao,
+#qtdPecas,
+#qtdCartoes {
+    width: 100%;
+    padding: 12px;
+
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+
+    font-size: 14px;
+}
+
+#codigo:focus,
+#descricao:focus,
+#qtdPecas:focus,
+#qtdCartoes:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.btnSave {
+    width: 100%;
+    padding: 12px;
+
+    border: none;
+    border-radius: 6px;
+
+    background-color: #2563eb;
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    transition: background-color 0.2s;
+}
+
+.btnSave:hover {
+    background-color: #1d4ed8;
+}

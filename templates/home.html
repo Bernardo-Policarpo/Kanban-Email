@@ -11,16 +11,19 @@
         <div id="homeMenu">
             <h2 id="homeTitle">Selecione uma opção</h2>
             <div id="menuButtons">
-                <a href="{{ url_for('add_card') }}" class="menuButton">
+                <a href="{{ url_for('add_card_page') }}" class="menuButton">
                     Adicionar Cartão
                 </a>
-                <a href="{{ url_for('edit_card') }}" class="menuButton">
+
+                <a href="{{ url_for('edit_card_page') }}" class="menuButton">
                     Editar Cartões
                 </a>
-                <a href="{{ url_for('edit_email') }}" class="menuButton">
+
+                <a href="{{ url_for('edit_email_page') }}" class="menuButton">
                     Editar E-mails
                 </a>
-                <a href="{{ url_for('send_email') }}" class="menuButton">
+
+                <a href="{{ url_for('send_email_page') }}" class="menuButton">
                     Enviar E-mail
                 </a>
                 <form action="{{ url_for('logout') }}" method="post">
