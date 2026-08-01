@@ -14,15 +14,15 @@
                 Preencha as informações
             </h2>
 
-            <form action="/add_card" method="post" id="addCardForm">
+            <form action="/add_card" method="post" id="addCardForm" autocomplete="off">
 
-                <input type="text" name="codigo" id="codigo" placeholder="Código" maxlength="9" minlength="9" pattern="[0-9]{9}" required>
+                <input type="text" name="codigo" id="codigo" placeholder="Código" maxlength="9" minlength="9" pattern="[0-9]{9}" autocomplete="off" required>
 
-                <input type="text" name="descricao" id="descricao" placeholder="Descrição" required>
+                <input type="text" name="descricao" id="descricao" placeholder="Descrição" autocomplete="off" required>
 
-                <input type="number" name="qtd_pecas" id="qtdPecas" placeholder="Quantidade de peças" required>
+                <input type="number" name="qtd_pecas" id="qtdPecas" placeholder="Quantidade de peças" min="1" autocomplete="off" required>
 
-                <input type="number" name="qtd_cartoes" id="qtdCartoes" placeholder="Quantidade de cartões" required>
+                <input type="number" name="qtd_cartoes" id="qtdCartoes" placeholder="Quantidade de cartões" min="1" autocomplete="off" required>
 
                 <input type="submit" value="Salvar" class="btnSave">
 

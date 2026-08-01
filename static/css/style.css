@@ -184,3 +184,77 @@ body {
 .btnSave:hover {
     background-color: #1d4ed8;
 }
+
+#editCardMenu {
+    background-color: white;
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#editCardTitle {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+#searchCardForm,
+#editCardForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#searchCardForm {
+    margin-bottom: 20px;
+}
+
+#deleteCardForm {
+    margin-top: 15px;
+}
+
+#buscarCartao,
+#codigoEditado,
+#descricaoEditada,
+#qtdPecasEditada,
+#qtdCartoesEditada {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+#buscarCartao:focus,
+#codigoEditado:focus,
+#descricaoEditada:focus,
+#qtdPecasEditada:focus,
+#qtdCartoesEditada:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.btnDelete {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #dc3545;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btnDelete:hover {
+    background-color: #bb2d3b;
+}
+
+.formLabel {
+    display: block;
+    margin-bottom: -5px;
+    color: #333;
+    font-size: 15px;
+    font-weight: bold;
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Cartão</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+
+        <div id="editCardMenu">
+
+            <h2 id="editCardTitle">Editar Cartão</h2>
+
+            <form action="{{ url_for('search_card') }}" method="get" autocomplete="off" id="searchCardForm">
+
+                <input type="text" name="buscar_cartao" id="buscarCartao" placeholder="Buscar Cartão" maxlength="9" minlength="9" pattern="[0-9]{9}" autocomplete="off" required>
+
+                <input type="submit" value="Buscar" class="btnSave">
+
+            </form>
+
+            {% if msg %}
+                <p class="error">{{ msg }}</p>
+            {% endif %}
+
+            {% if cartao %}
+
+            <form action="/edit_card" method="post" autocomplete="off" id="editCardForm">
+
+                <input type="hidden" name="id" value="{{ cartao[0] }}">
+
+                <label for="codigoEditado" class="formLabel">Código</label>
+                <input type="text" name="codigo_editado" id="codigoEditado" value="{{ cartao[1] }}" maxlength="9" minlength="9" pattern="[0-9]{9}" required>
+
+                <label for="descricaoEditada" class="formLabel">Descrição</label>
+                <input type="text" name="descricao_editada" id="descricaoEditada" value="{{ cartao[2] }}" required>
+
+                <label for="qtdPecasEditada" class="formLabel">Quantidade de peças</label>
+                <input type="number" name="qtd_pecas_editada" id="qtdPecasEditada" value="{{ cartao[3] }}" min="1" required>
+
+                <label for="qtdCartoesEditada" class="formLabel">Quantidade de cartões</label>
+                <input type="number" name="qtd_cartoes_editada" id="qtdCartoesEditada" value="{{ cartao[4] }}" min="1" required>
+
+                <input type="submit" value="Salvar" class="btnSave">
+
+            </form>
+
+            <form action="/delete_card" method="post" id="deleteCardForm">
+
+                <input type="hidden" name="id" value="{{ cartao[0] }}">
+
+                <input type="submit" value="Deletar" class="btnDelete">
+
+            </form>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</body>
+</html>
