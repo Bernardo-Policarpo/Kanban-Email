@@ -185,5 +185,100 @@ def delete_card():
     return redirect(url_for('edit_card_page'))
 
 
+@app.post('/add_sender')
+def add_sender():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    name = request.form['add_sender_name']
+    email = request.form['add_email_sender']
+
+    cursor.execute(
+        'SELECT email FROM remetentes WHERE email = ?',(email,)
+    )
+
+    resultado = cursor.fetchone()
+
+    if resultado is None:
+        cursor.execute(
+            'INSERT INTO remetentes (nome, email) VALUES (?, ?)',(name, email)
+        )
+        conn.commit()
+        conn.close()
+        return redirect(url_for('edit_email_page'))
+
+    conn.close()
+    msg = "Email já existente"
+    return render_template('edit_email.html', msg=msg)
+
+    
+@app.get('/search_sender')
+def search_sender():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    nome = request.args['search_sender']
+
+    cursor.execute(
+        'SELECT * FROM remetentes WHERE nome LIKE ?',
+        (f'%{nome}%',)
+    )
+
+    resultados = cursor.fetchall()
+
+    conn.close()
+
+    return render_template('edit_email.html', resultados=resultados, open_search_sender=True)
+
+
+@app.post('/edit_sender')
+def edit_sender():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    id_sender = request.form['id_sender']
+    name = request.form['name_to_be_edited']
+    email = request.form['email_to_be_edited']
+
+    cursor.execute(
+        'SELECT email FROM remetentes WHERE email = ? AND id != ?',
+        (email, id_sender)
+    )
+
+    resultados = cursor.fetchone()
+
+    if resultados is None:
+        cursor.execute(
+            'UPDATE remetentes SET nome = ?, email = ? WHERE id = ?',
+            (name, email, id_sender)
+        )
+
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('edit_email_page'))
+
+    conn.close()
+
+    msg = "Email já existente"
+    return render_template('edit_email.html', msg=msg)
+
+@app.post('/delete_sender')
+def delete_sender():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    id_sender = request.form['id_sender_to_delete']
+
+    cursor.execute(
+        'DELETE FROM remetentes WHERE id = ?',(id_sender,)
+    )
+
+    conn.commit()
+    conn.close()
+    return redirect(url_for('edit_email_page'))
+
+    
+    
 if __name__ == '__main__':
     app.run(debug=False)

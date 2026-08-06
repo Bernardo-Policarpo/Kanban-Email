@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Remetentes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div id="senderMenu">
+
+        <button onclick="open_modal('add_remetente')">
+            Adicionar Remetente
+        </button> <br>
+
+        <dialog id="add_remetente_modal">
+            <form action="/add_sender" name="add_sender" method="post">
+
+                <label for="add_sender_name">Adicionar Remetente</label><br>
+                <input type="text" placeholder="Ex: Gustavo" name="add_sender_name" id="add_sender_name"><br><br>
+
+                <label for="add_email_sender">Email</label><br>
+                <input type="email" placeholder="Ex: email@email.com" name="add_email_sender" id="add_email_sender"><br><br>
+
+                <input type="submit" value="Salvar"><br><br>
+
+            </form>
+
+            <button onclick="close_modal('add_remetente')">
+                Fechar
+            </button>
+        </dialog>
+
+        <br>
+
+        <button onclick="open_modal('search_remetente')">
+            Editar Remetente
+        </button>
+
+        <dialog id="search_remetente_modal">
+
+            <form action="{{ url_for('search_sender') }}" name="search_sender" method="get">
+
+                <label for="search_sender">Pesquisar Remetente</label><br>
+                <input type="text" placeholder="Ex: Gustavo" name="search_sender" id="search_sender"><br><br>
+
+                <input type="submit" value="Pesquisar"><br><br>
+
+            </form>
+
+            {% if resultados %}
+                <div id="senderResults">
+
+                    {% for resultado in resultados %}
+
+                        <div class="senderResult">
+
+                            <form action="/edit_sender" name="sender" method="post">
+
+                                <input type="hidden" name="id_sender" value="{{ resultado[0] }}">
+
+                                <label for="name_to_be_edited">Nome:</label><br>
+                                <input type="text" name="name_to_be_edited" id="name_to_be_edited" value="{{ resultado[1] }}"><br><br>
+
+                                <label for="email_to_be_edited">Email:</label><br>
+                                <input type="email" name="email_to_be_edited" id="email_to_be_edited" value="{{ resultado[2] }}"><br><br>
+
+                                <input type="submit" value="Salvar">
+
+                            </form>
+
+                            <form action="/delete_sender" name="delete_sender" method="post">
+
+                                <input type="hidden" name="id_sender_to_delete" value="{{ resultado[0] }}">
+
+                                <input type="submit" value="Deletar">
+
+                            </form>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+            {% endif %}
+
+            <button onclick="close_modal('search_remetente')">
+                Fechar
+            </button>
+
+        </dialog>
+
+        {% if msg %}
+            <p class="error">{{ msg }}</p>
+        {% endif %}
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+    {% if open_search_sender %}
+        <script>
+            open_modal('search_remetente');
+        </script>
+    {% endif %}
+
+</body>
+</html>
