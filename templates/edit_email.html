@@ -94,6 +94,11 @@
             <p class="error">{{ msg }}</p>
         {% endif %}
 
+
+        <a href="{{ url_for('home') }}" class="menuButton">
+            Voltar para o início
+        </a>
+
     </div>
 
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
