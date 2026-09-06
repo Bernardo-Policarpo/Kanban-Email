@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar E-mail</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div id="sendEmailMenu">
+
+            <div id="sendEmailHeader">
+                <h2 id="sendEmailTitle">Enviar E-mail</h2>
+            </div>
+
+            {% if not preview %}
+
+                <div id="searchCodeSection">
+
+                    <form action="{{ url_for('search_code') }}" method="get" id="searchCodeForm" autocomplete="off">
+
+                        <div id="searchCodeInput">
+                            <input type="text" name="search_code" id="searchCode" placeholder="Pesquisar cartão" autocomplete="off" required>
+                        </div>
+
+                        <div id="searchCodeButton">
+                            <input type="submit" value="Pesquisar" class="btnSearch">
+                        </div>
+
+                    </form>
+
+                </div>
+
+            {% endif %}
+
+            <div id="recipientSection">
+
+                <div id="recipientHeader">
+                    <h3 id="recipientTitle">Destinatários:</h3>
+                </div>
+
+                <div id="recipientList">
+
+                    {% for remetente in remetentes %}
+
+                        <div class="recipientItem">
+
+                            <p class="recipient">
+                                {{ remetente[1] }} - {{ remetente[2] }}
+                            </p>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="recipientItem">
+
+                            <p class="recipient">
+                                Nenhum destinatário cadastrado.
+                            </p>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            {% if resultados and not preview %}
+
+                <div id="cardSelectionSection">
+
+                    <form action="{{ url_for('preview_email') }}" method="post" id="sendEmailForm">
+
+                        <div id="cardResults">
+
+                            {% for resultado in resultados %}
+
+                                <div class="cardResult">
+
+                                    <div class="cardInfo">
+
+                                        <p class="cardCode">
+                                            {{ resultado[0] }}
+                                        </p>
+
+                                        <p class="cardDescription">
+                                            {{ resultado[1] }}
+                                        </p>
+
+                                    </div>
+
+                                    <div class="cardOptions">
+
+                                        {% for i in range(1, resultado[3] + 1) %}
+
+                                            <label class="cardCheckbox">
+
+                                                <input type="checkbox" name="cartoes" value="{{ resultado[0] }}-{{ i }}">
+
+                                                <span>
+                                                    {{ i }}/{{ resultado[3] }}
+                                                </span>
+
+                                            </label>
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                        <div id="generatePreviewButton">
+
+                            <input type="submit" value="Gerar Prévia" class="btnSendEmail">
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            {% endif %}
+
+            {% if preview %}
+
+                <div id="emailPreview">
+
+                    <div id="emailPreviewHeader">
+                        <h3 id="emailPreviewTitle">Prévia do E-mail</h3>
+                    </div>
+
+                    <div id="emailSubject">
+
+                        <p>
+                            <strong>Assunto:</strong>
+                            {{ assunto }}
+                        </p>
+
+                    </div>
+
+                    <div id="previewRecipients">
+
+                        <div id="previewRecipientsHeader">
+                            <h4>Destinatários:</h4>
+                        </div>
+
+                        <div id="previewRecipientList">
+
+                            {% for remetente in remetentes %}
+
+                                <div class="recipientItem">
+
+                                    <p class="recipient">
+                                        {{ remetente[1] }} - {{ remetente[2] }}
+                                    </p>
+
+                                </div>
+
+                            {% else %}
+
+                                <div class="recipientItem">
+
+                                    <p class="recipient">
+                                        Nenhum destinatário cadastrado.
+                                    </p>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                    <div id="emailBodyContainer">
+                        <pre id="emailBody">{{ texto }}</pre>
+                    </div>
+
+                </div>
+
+                <div id="confirmSendEmail">
+
+                    <form action="{{ url_for('send_email') }}" method="post" id="confirmSendEmailForm">
+
+                        <div id="selectedCards">
+
+                            {% for cartao in cartoes %}
+
+                                <input type="hidden" name="cartoes" value="{{ cartao }}">
+
+                            {% endfor %}
+
+                        </div>
+
+                        <div id="confirmSendEmailButton">
+
+                            <input type="submit" value="Enviar E-mail" class="btnSendEmail">
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            {% endif %}
+
+            {% if msg %}
+
+                <div id="emailMessage">
+
+                    <p class="error">
+                        {{ msg }}
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>

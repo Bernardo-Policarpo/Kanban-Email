@@ -4,12 +4,12 @@ from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from dotenv import load_dotenv
 import os
+from urllib.parse import quote
 
 load_dotenv()
 app = Flask(__name__)
 ph = PasswordHasher()
 app.secret_key = os.getenv('SECRET_KEY')
-
 
 @app.after_request
 def add_header(response):
@@ -60,12 +60,26 @@ def edit_email_page():
     return render_template('edit_email.html')
 
 
-@app.route('/enviar-emais')
+@app.route('/send-email')
 def send_email_page():
     if not logged():
         return redirect(url_for('index'))
 
-    return render_template('send_email.html')
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        'SELECT id, nome, email FROM remetentes'
+    )
+
+    remetentes = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        'send_email.html',
+        remetentes=remetentes
+    )
 
 
 @app.post('/login')
@@ -278,7 +292,153 @@ def delete_sender():
     conn.close()
     return redirect(url_for('edit_email_page'))
 
-    
-    
+@app.get('/search-code')
+def search_code():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    search_code = request.args['search_code']
+
+    cursor.execute(
+        '''
+        SELECT codigo, descricao, qtd_pecas, qtd_cartoes
+        FROM cartoes
+        WHERE codigo LIKE ?
+        ''',
+        (f'%{search_code}%',)
+    )
+
+    resultados = cursor.fetchall()
+
+    cursor.execute(
+        'SELECT id, nome, email FROM remetentes'
+    )
+
+    remetentes = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        'send_email.html',
+        resultados=resultados,
+        remetentes=remetentes
+    )
+
+
+def build_email_content(cartoes, cursor):
+    texto = "Prezados,\n\n"
+
+    texto += "Gostaria de solicitar a criação de uma nova ordem de produção para o cartão do Kanban. Pois o cartão do mesmo acaba de retornar para ser adicionado ao quadro de materiais pré-montados.\n\n"
+
+    texto += "Segue abaixo:\n\n"
+
+    for cartao in cartoes:
+        codigo, numero_cartao = cartao.rsplit('-', 1)
+
+        cursor.execute(
+            '''
+            SELECT qtd_pecas, qtd_cartoes
+            FROM cartoes
+            WHERE codigo = ?
+            ''',
+            (codigo,)
+        )
+
+        resultado = cursor.fetchone()
+
+        if resultado is None:
+            continue
+
+        qtd_pecas = resultado[0]
+        qtd_cartoes = resultado[1]
+
+        texto += f"{codigo} - {qtd_pecas} unidades cartão {numero_cartao}/{qtd_cartoes}\n\n"
+
+    texto += "Agradeço pela atenção e aguardo o retorno."
+
+    return texto
+
+
+@app.post('/preview-email')
+def preview_email():
+    cartoes = request.form.getlist('cartoes')
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        'SELECT id, nome, email FROM remetentes'
+    )
+
+    remetentes = cursor.fetchall()
+
+    if not cartoes:
+        conn.close()
+
+        return render_template(
+            'send_email.html',
+            remetentes=remetentes,
+            msg='Selecione pelo menos um cartão.'
+        )
+
+    texto = build_email_content(cartoes, cursor)
+
+    conn.close()
+
+    assunto = "Solicitação de Criação de Ordem do Cartão Kanban"
+
+    return render_template(
+        'send_email.html',
+        remetentes=remetentes,
+        cartoes=cartoes,
+        assunto=assunto,
+        texto=texto,
+        preview=True
+    )
+
+
+@app.post('/send-email')
+def send_email():
+    cartoes = request.form.getlist('cartoes')
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        'SELECT id, nome, email FROM remetentes'
+    )
+
+    remetentes = cursor.fetchall()
+
+    if not cartoes:
+        conn.close()
+
+        return render_template(
+            'send_email.html',
+            remetentes=remetentes,
+            msg='Selecione pelo menos um cartão.'
+        )
+
+    texto = build_email_content(cartoes, cursor)
+
+    para = ','.join(
+        remetente[2]
+        for remetente in remetentes
+        if remetente[2]
+    )
+
+    assunto = "Solicitação de Criação de Ordem do Cartão Kanban"
+
+    conn.close()
+
+    url = (
+        "https://outlook.office.com/mail/deeplink/compose?"
+        "to=" + quote(para) +
+        "&subject=" + quote(assunto) +
+        "&body=" + quote(texto)
+    )
+
+    return redirect(url)
+
 if __name__ == '__main__':
     app.run(debug=False)
