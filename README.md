@@ -2,6 +2,8 @@
 
 Sistema web interno desenvolvido em Flask para envio de e-mails para acionamento de cartões Kanban.
 
+# Status: Finalizado
+
 ## Tecnologias
 
 - Python
