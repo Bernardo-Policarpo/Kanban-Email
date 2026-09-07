@@ -10,13 +10,13 @@
     <div id="senderMenu">
 
         <button onclick="open_modal('add_remetente')">
-            Adicionar Remetente
+            Adicionar Destinatário
         </button> <br>
 
         <dialog id="add_remetente_modal">
             <form action="/add_sender" name="add_sender" method="post">
 
-                <label for="add_sender_name">Adicionar Remetente</label><br>
+                <label for="add_sender_name">Adicionar Destinatário</label><br>
                 <input type="text" placeholder="Ex: Gustavo" name="add_sender_name" id="add_sender_name"><br><br>
 
                 <label for="add_email_sender">Email</label><br>
@@ -34,14 +34,14 @@
         <br>
 
         <button onclick="open_modal('search_remetente')">
-            Editar Remetente
+            Editar Destinatário
         </button>
 
         <dialog id="search_remetente_modal">
 
             <form action="{{ url_for('search_sender') }}" name="search_sender" method="get">
 
-                <label for="search_sender">Pesquisar Remetente</label><br>
+                <label for="search_sender">Pesquisar Destinatário</label><br>
                 <input type="text" placeholder="Ex: Gustavo" name="search_sender" id="search_sender"><br><br>
 
                 <input type="submit" value="Pesquisar"><br><br>
