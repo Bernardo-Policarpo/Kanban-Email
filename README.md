@@ -2,7 +2,7 @@
 
 Sistema web interno desenvolvido em Flask para envio de e-mails para acionamento de cartões Kanban.
 
-# Kanban Email: Finalizado
+# Status: Finalizado
 
 ## Tecnologias
 
